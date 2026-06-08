@@ -1,0 +1,12 @@
+# GitHub Pages Configuration
+# This file tells GitHub Pages to deploy from the root directory
+
+# Exclude build scripts and source files from publishing
+exclude:
+  - build.ps1
+  - encode_js.ps1
+  - fullscreen.css
+  - wrapper_template.txt
+  - "*.ps1"
+  - node_modules/
+  - DEPLOY.md
