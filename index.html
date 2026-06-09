@@ -117,9 +117,14 @@ if(e.ctrlKey&&e.keyCode===85){e.preventDefault();if(!_p)_ap();return!1}
 if(e.ctrlKey&&e.shiftKey&&(e.keyCode===73||e.keyCode===74)){e.preventDefault();if(!_p)_ap();return!1}
 if(e.ctrlKey&&e.keyCode===83){e.preventDefault();if(!_p)_ap();return!1}
 };
+var _iw=window.innerWidth,_ih=window.innerHeight,_ow=window.outerWidth,_oh=window.outerHeight;
+var _initDiff=_ow-_iw;
 setInterval(function(){
-if(!_p&&(window.outerWidth-window.innerWidth>160||window.outerHeight-window.innerHeight>160)){document.body.style.display="none"}else{document.body.style.display=""}
-},1000);
+if(!_p){
+var d2=(window.outerWidth-window.innerWidth)-_initDiff;
+if(d2>80||window.outerHeight-window.innerHeight>_oh-_ih+80){document.body.style.display="none"}
+else{document.body.style.display=""}
+}},1000);
 document.onselectstart=function(e){if(!_p)return!1};
 document.ondragstart=function(e){if(!_p)return!1};
 })();
