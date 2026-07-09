@@ -1,10 +1,13 @@
 # 第三小学学生成绩核算系统
 
-> 第三小学学生成绩核算系统 by 冬阳 v1.59
+> 第三小学学生成绩核算系统 by 冬阳 v1.60
 
 ## 在线使用
 
-直接访问 [成绩核算系统](https://anbola.github.io/chengji/) 即可使用。
+访问以下任一地址即可使用：
+- https://anbola.github.io/chengji/
+- https://anbola.gitee.io/chengji
+- https://chengji.903286351.workers.dev/
 
 ## 文件说明
 
@@ -13,13 +16,50 @@
 ├── deploy/                    # 部署文件夹（上传到GitHub Pages）
 │   ├── index.html             # 加密部署版（含源码保护）
 │   └── logo_.ico              # 网站图标
-├── source_v1.59源码.html      # 源代码（未加密版）
+├── source_v1.60源码.html      # 源代码（未加密版）
 ├── 提示词文档.html            # 完整功能说明文档
 ├── build_deploy.py            # 构建脚本（从源码生成加密部署版）
 ├── logo_.ico                  # Logo 图标源文件
 ├── 历史版本/                  # 历史版本源码归档
+├── electron/                  # Electron EXE桌面版项目
+│   ├── main.js                # Electron主进程
+│   ├── preload.js             # 安全隔离层
+│   ├── package.json           # Electron配置
+│   ├── build_exe.py           # EXE构建脚本
+│   └── www/index.html         # 加密HTML（从deploy复制）
 └── README.md                  # 本文件
 ```
+
+## v1.60 更新内容
+
+### 1. 修复科目识别bug（核心修复）
+- **问题根因**：原识别逻辑中，不在白名单但通过数值范围检测(0~150)的列会被自动识别为科目，导致"场地"等空白列被误认为成绩列
+- **修复方案**：未知列名但有成绩数据的列不再自动识别为科目，改为忽略并提示用户"如需核算该科目，请将列名改为标准科目名称"
+- **扩展白名单**：新增初中科目——外语、生物学、信息科技、体育与健康、艺术、综合实践等（基于2022新课标）
+- **小学科目**：语文、数学、英语、道法、科学
+- **初中科目**：语文、数学、英语/外语、道法/道德与法治、历史、地理、物理、化学、生物/生物学、信息科技/信息技术、体育、音乐、美术、劳动等
+
+### 2. 精简导入模板
+- **删除4列**：场地、总分、年名、科任教师（不再出现在默认模板中）
+- 总分和年名由系统自动计算，科任教师从"科任教师"工作表获取
+- 导入时仍兼容旧模板中的这些列（自动忽略不识别）
+
+### 3. 分段统计表新增全年级汇总行
+- **学科分段表**：每个学科的第一行为"全年级"汇总行（橙色显示），汇总该学科所有班级的总分段情况
+- **总分分段表**：第一行为"全年级"汇总行（橙色显示），汇总全年级总分分段情况
+- 班列单元格填入"全年级"以示区分
+
+### 4. 部署版绑定3个域名
+- `https://anbola.github.io/chengji/`（GitHub Pages）
+- `https://anbola.gitee.io/chengji`（Gitee Pages）
+- `https://chengji.903286351.workers.dev/`（Cloudflare Workers）
+- 同时支持 `file:` 协议（用于Electron桌面版）
+
+### 5. Electron桌面版EXE
+- 新增 `electron/` 目录，包含完整的Electron项目
+- 支持生成安装包（NSIS）和单文件便携版（portable）
+- 源码加密：HTML的JS代码Base64编码 + Electron asar打包 + 禁用开发者工具
+- 构建方法：`cd electron && npm install && python build_exe.py`
 
 ## v1.59 更新内容
 
@@ -355,7 +395,7 @@
 
 ### 方法二：使用构建脚本
 
-1. 修改 `source_v1.59源码.html` 源代码
+1. 修改 `source_v1.60源码.html` 源代码
 2. 运行 `python build_deploy.py` 生成加密部署版
 3. 将 `deploy/` 文件夹内容上传到GitHub
 
